@@ -1,0 +1,34 @@
+name: Deploy Supabase Edge Function
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "supabase/functions/process-schedule/**"
+      - "supabase/config.toml"
+      - ".github/workflows/deploy-supabase-function.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-process-schedule:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy process-schedule
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase functions deploy process-schedule             --project-ref "$SUPABASE_PROJECT_REF"
