@@ -1,0 +1,4 @@
+project_id = "igbkjkjagkhxpxezjwtj"
+
+[functions.process-schedule]
+verify_jwt = true
